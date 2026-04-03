@@ -25,7 +25,8 @@ jobs:
       - name: Initialize and Build APK
         run: |
           bubblewrap init --manifest="https://nihongo-navigator.in/manifest.json" --yes
-          bubblewrap build --yes
+          # This command creates a temporary key so the build doesn't get stuck
+          bubblewrap build --skipSigning --yes
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
