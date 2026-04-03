@@ -22,12 +22,12 @@ jobs:
       - name: Install Bubblewrap
         run: npm install -g @bubblewrap/cli
 
-      - name: Build APK (Manual Mode)
+      - name: Build APK (Express Mode)
         run: |
-          # 1. Initialize using the LOCAL manifest file
+          # 1. Initialize with the local manifest and force default answers
           bubblewrap init --manifest=manifest.json --yes
           
-          # 2. Build the APK and skip the interactive signing
+          # 2. Build the APK while skipping every possible interactive prompt
           bubblewrap build --skipSigning --yes
         shell: bash
 
