@@ -22,13 +22,12 @@ jobs:
       - name: Install Bubblewrap
         run: npm install -g @bubblewrap/cli
 
-      - name: Build APK (Silent Mode)
+      - name: Build APK (Manual Mode)
         run: |
-          # This command creates the project folder without asking questions
-          bubblewrap init --manifest="https://nihongo-navigator.in/manifest.json" --yes
+          # 1. Initialize using the LOCAL manifest file
+          bubblewrap init --manifest=manifest.json --yes
           
-          # This builds the actual APK file
-          # We use --skipSigning because we are just testing for now
+          # 2. Build the APK and skip the interactive signing
           bubblewrap build --skipSigning --yes
         shell: bash
 
