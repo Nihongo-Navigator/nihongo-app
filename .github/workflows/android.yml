@@ -19,16 +19,22 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install Bubblewrap
-        run: npm install -g @bubblewrap/cli
-
-      - name: Build APK (Express Mode)
+      - name: Install and Build (Hard Force)
         run: |
-          # 1. Initialize with the local manifest and force default answers
-          bubblewrap init --manifest=manifest.json --yes
+          # 1. Install the tool
+          npm install -g @bubblewrap/cli
           
-          # 2. Build the APK while skipping every possible interactive prompt
-          bubblewrap build --skipSigning --yes
+          # 2. Pre-create the config folder and file so it NEVER asks for paths
+          mkdir -p ~/.bubblewrap
+          echo "{\"jdkPath\":\"$JAVA_HOME\",\"androidSdkPath\":\"$ANDROID_HOME\"}" > ~/.bubblewrap/config.json
+          
+          # 3. Accept all licenses in the background
+          yes | sdkmanager --licenses || true
+          
+          # 4. Run the Init and Build using 'yes' to spam the Enter key
+          # We use --skipSigning to avoid the "Create a password" prompt
+          yes | bubblewrap init --manifest=manifest.json --yes
+          yes | bubblewrap build --skipSigning --yes
         shell: bash
 
       - name: Upload APK Artifact
