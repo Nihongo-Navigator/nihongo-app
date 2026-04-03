@@ -22,11 +22,15 @@ jobs:
       - name: Install Bubblewrap
         run: npm install -g @bubblewrap/cli
 
-      - name: Initialize and Build APK
+      - name: Build APK (Silent Mode)
         run: |
+          # This command creates the project folder without asking questions
           bubblewrap init --manifest="https://nihongo-navigator.in/manifest.json" --yes
-          # This command creates a temporary key so the build doesn't get stuck
+          
+          # This builds the actual APK file
+          # We use --skipSigning because we are just testing for now
           bubblewrap build --skipSigning --yes
+        shell: bash
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
